@@ -5,6 +5,9 @@
 //  Created by Varun Chopra on 10/5/15.
 //  Copyright © 2015 Varun Chopra. All rights reserved.
 //
+//  This application is inspired by Ash Furrow's "Putting a UICollectionView in a UITableViewCell"
+//  Reference: https://ashfurrow.com/blog/putting-a-uicollectionview-in-a-uitableviewcell/
+//  Reference Github: https://github.com/AshFurrow/AFTabledCollectionView
 
 #import "ViewController.h"
 #import "TableViewCell.h"
@@ -13,18 +16,23 @@
 @interface ViewController ()
 
 @property (nonatomic, strong) NSArray *colorArray;
+@property (nonatomic, strong) NSArray *reversedColorArray;
 @property (nonatomic, strong) NSMutableDictionary *contentOffsetDictionary;
 
 @end
 
 @implementation ViewController
 
+//Number of Table view rows
 const NSInteger numberOfTableViewRows = 10;
+
+//Number of Collection view cells inside a table view row
 const NSInteger numberOfCollectionViewCells = 15;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    //Create a random color Array.
     NSMutableArray *colorArray = [NSMutableArray arrayWithCapacity:numberOfCollectionViewCells];
     
     for (NSInteger collectionViewItem = 0; collectionViewItem < numberOfCollectionViewCells; collectionViewItem++)
@@ -38,9 +46,12 @@ const NSInteger numberOfCollectionViewCells = 15;
         [colorArray addObject:color];
     }
     
-    self.colorArray = [NSArray arrayWithArray:colorArray];
+    _colorArray = [NSArray arrayWithArray:colorArray];
     
-    self.contentOffsetDictionary = [NSMutableDictionary dictionary];
+    //Take random color array and reverse it before placing into the _reversedColorArray
+    _reversedColorArray = [[_colorArray reverseObjectEnumerator] allObjects];
+    
+    _contentOffsetDictionary = [NSMutableDictionary dictionary];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -62,6 +73,8 @@ const NSInteger numberOfCollectionViewCells = 15;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    //By having two different cell identifiers, two different cell types can be created
+    //without interfering with the way reusing of cells occur
     static NSString *cellidentifier = @"cellidentifier";
     static NSString *secondcellidentifier = @"secondcellidentifier";
     
@@ -112,7 +125,7 @@ const NSInteger numberOfCollectionViewCells = 15;
     {
         [self insertDatasourceAndDelegateForCell:cell forRowAtIndexPath:indexPath andCellType:NO];
     }
-    if(indexPath.row == 6)
+    else if(indexPath.row == 6)
     {
         [self insertDatasourceAndDelegateForCell:cell forRowAtIndexPath:indexPath andCellType:NO];
     }
@@ -180,17 +193,17 @@ const NSInteger numberOfCollectionViewCells = 15;
     if (collectionView.tag == 0)
     {
         //insert color
-        cell.backgroundColor = self.colorArray[indexPath.row];
+        cell.backgroundColor = _reversedColorArray[indexPath.row];
     }
     else if (collectionView.tag == 6)
     {
         //insert color
-        cell.backgroundColor = self.colorArray[indexPath.row];
+        cell.backgroundColor = _reversedColorArray[indexPath.row];
     }
     else
     {
         //insert color
-        cell.backgroundColor = self.colorArray[indexPath.row];
+        cell.backgroundColor = _colorArray[indexPath.row];
     }
     
     return cell;
