@@ -6,6 +6,8 @@
 //  Copyright © 2015 Varun Chopra. All rights reserved.
 //
 //  This application is inspired by Ash Furrow's "Putting a UICollectionView in a UITableViewCell"
+//  and shows how to have uicollection view cells and tableview rows with different dimensions.
+//
 //  Reference: https://ashfurrow.com/blog/putting-a-uicollectionview-in-a-uitableviewcell/
 //  Reference Github: https://github.com/AshFurrow/AFTabledCollectionView
 
